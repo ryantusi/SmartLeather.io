@@ -20,6 +20,32 @@ def after_request(response):
 def index():
     return render_template("index.html")
 
-@app.route("/demo")
+@app.route("/demo", methods=["GET", "POST"])
 def demo():
-    return render_template("demo.html")
+    if request.method == "GET":
+        return render_template("demo.html")
+    else:
+        product_name1 = request.form.get("product_name1")
+        product_id1 = request.form.get("product_id1")
+
+        if not (product_name1 and product_id1):
+            pass
+
+        product_name2 = request.form.get("product_name2")
+        product_id2 = request.form.get("product_id2")
+
+        if not (product_name2 and product_id2):
+            pass
+
+        customer_name = request.form.get("customer_name")
+        customer_id = request.form.get("customer_id")
+        product_id3 = request.form.get("product_id3")
+        quantity = request.form.get("quantity")
+
+        if not (customer_id and customer_name):
+            pass
+
+        return render_template("demo.html")
+
+if __name__ == '__main__':
+    app.run(debug=True)
