@@ -33,6 +33,7 @@ def demo():
 
         product_name2 = request.form.get("product_name2")
         product_id2 = request.form.get("product_id2")
+        qr_id = request.form.get("qr_id")
 
         if not (product_name2 and product_id2):
             pass
