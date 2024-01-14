@@ -868,6 +868,10 @@ vertical-align: middle;
   }
 }
 
+.green, .blue, .yellow, .red {
+    font-weight: bold;
+}
+
 .green {
     color: #2e944b;
 }
