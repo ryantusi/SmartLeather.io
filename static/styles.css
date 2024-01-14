@@ -262,6 +262,13 @@ color: #fff;
     background-color: #b284f6;
 }
 
+.btn--red {
+  background-color: #c7403c;
+}
+
+.btn--red:hover{
+  background-color: #ff7d7d;
+}
 .btn--violet {
     background-color: #6f79ff;
 }
@@ -695,6 +702,15 @@ width: 100%;
 
 .form__field--half:first-of-type{
   padding-right:15px;
+}
+
+.form__field--full{
+  width:100%;
+  float:center;
+}
+
+.form__field--full:first-of-type{
+  padding-bottom:10px;
 }
 
 
