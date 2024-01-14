@@ -273,6 +273,15 @@ color: #fff;
 .btn--red:hover{
   background-color: #ff7d7d;
 }
+
+.btn--green {
+  background-color: #4eb836;
+}
+
+.btn--green:hover{
+  background-color: #8bf580;
+}
+
 .btn--violet {
     background-color: #6f79ff;
 }
