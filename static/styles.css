@@ -602,6 +602,14 @@ filter: drop-shadow(0px 7px 4px rgba(0,0,0,.2));
   background-image: url(/static/assets/chatbot.png);  
 }
 
+.article-pre__img--seventh{
+  background-image: url(/static/assets/ryan.jpg);  
+}
+
+.article-pre__img--eighth{
+  background-image: url(/static/assets/prem.jpg);  
+}
+
 .article-pre:hover .article-pre__img {
   box-shadow: 0px 10px 13px 4px rgba(0, 0, 0,0.2);
 }
