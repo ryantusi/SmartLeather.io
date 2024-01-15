@@ -152,7 +152,91 @@
                 </div>
             </div>
         </div>
-    
+        
+        <div class="sect sect--padding-bottom">
+                <div class="row row--center row--margin">
+                    <div class="col-md-4 col-sm-4 price-box price-box--purple">
+                        <div class="price-box__wrap">
+                            <div class="price-box__img"></div>
+                            <h1 class="price-box__title">
+                                New Customer
+                            </h1>
+                            <p class="price-box__people">
+                                Generate Customer ID
+                            </p>
+                            
+                                <form id="creation" class="form" action="/demo" method="POST">
+                                    <div class="form-group">
+                                        <div class="form__field--full">
+                                            <input id="new_customer_name" name="new_customer_name" type="text" placeholder="New Customer Name" class="form__field form__text" required></input>
+                                        </div>
+                                    </div>
+                                    <div class="price-box__btn">
+                                        <button class="btn btn--purple btn--width">Generate</button>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+
+                    <!-- second -->
+                    <div class="col-md-4 col-sm-4 price-box price-box--purple">
+                        <div class="price-box__wrap">
+                            <div class="price-box__img"></div>
+                            <h1 class="price-box__title">
+                                Remove Customer
+                            </h1>
+                            <p class="price-box__people">
+                                Remove existing customer
+                            </p>
+                            
+                                <form id="deletion" class="form" action="/demo" method="POST">
+                                    <div class="form-group">
+                                        <select class="form__field form__select" id="product_name2" name="product_name2" required>
+                                            <option selected value>Choose Name*</option>
+                                            <option value=1>Customer n</option>
+                                            <option value=2>Customer n+1</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form__field--full">
+                                            <input id="customer_id2" name="customer_id2" type="text" placeholder="Customer ID" class="form__field form__text" required></input>
+                                        </div>
+                                    </div>
+                                    <div class="price-box__btn">
+                                        <button type="submit" class="btn btn--red btn--width">Delete</button>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+
+                    <!-- third -->
+                    <div class="col-md-4 col-sm-4 price-box price-box--purple">
+                        <div class="price-box__wrap">
+                            <div class="price-box__img"></div>
+                            <h1 class="price-box__title">
+                                Cancel Order
+                            </h1>
+                            <p class="price-box__people">
+                                Remove existing order
+                            </p>
+                            
+                                <form id="feedback" class="form" action="/demo" method="POST">
+                                    <div class="form-group">
+                                        <div class="form__field--half">
+                                            <input id="order_id" name="order_id" type="text" placeholder="Order ID" class="form__field form__text" required></input>
+                                        </div>
+                                        <div class="form__field--half">
+                                            <input id="job_card" name="job_card" type="text" placeholder="Job Card" class="form__field form__text" required></input>
+                                        </div>
+                                    </div>
+                                    <div class="price-box__btn">
+                                        <button type="submit" class="btn btn--blue btn--width">Submit</button>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
     
         <div class="sect sect--white">
             <div class="container">
