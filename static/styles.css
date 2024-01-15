@@ -594,6 +594,14 @@ filter: drop-shadow(0px 7px 4px rgba(0,0,0,.2));
   background-image: url(/static/assets/scalability.png);  
 }
 
+.article-pre__img--fifth{
+  background-image: url(/static/assets/rfid.jpg);  
+}
+
+.article-pre__img--sixth{
+  background-image: url(/static/assets/chatbot.png);  
+}
+
 .article-pre:hover .article-pre__img {
   box-shadow: 0px 10px 13px 4px rgba(0, 0, 0,0.2);
 }
