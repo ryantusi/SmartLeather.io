@@ -579,19 +579,19 @@ filter: drop-shadow(0px 7px 4px rgba(0,0,0,.2));
 }
 
 .article-pre__img--first{
-   background-image: url(https://cdn.dribbble.com/users/18730/screenshots/2182635/newshot.png);
+   background-image: url(/static/assets/automation.jpg);
 }
 
 .article-pre__img--second{
-  background-image: url(https://image.ibb.co/cYsvbw/dribbble.jpg);  
+  background-image: url(/static/assets/dashboard.png);  
 }
 
 .article-pre__img--third{
-  background-image: url(https://cdn.dribbble.com/users/103909/screenshots/3671664/sensors-01.jpg);  
+  background-image: url(/static/assets/data.png);  
 }
 
 .article-pre__img--fourth{
-  background-image: url(https://cdn.dribbble.com/users/997070/screenshots/4120967/attachments/943230/01-1._Cover_Copy_2x.png);  
+  background-image: url(/static/assets/scalability.png);  
 }
 
 .article-pre:hover .article-pre__img {
