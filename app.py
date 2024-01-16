@@ -3,7 +3,7 @@ from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 
 from id_generation import qr_id_generation, job_card_generation, order_id_generation, customer_id_generation
-from methods import copy_to_clipboard, customer_exists, add_customer, get_customers
+from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer
 
 app = Flask(__name__)
 db = SQL("sqlite:///management.db")
@@ -72,7 +72,10 @@ def demo():
         customer_id2 = request.form.get("customer_id2")
 
         if (customer_name2 and customer_id2):
-            return render_template("demo.html")
+            if check_customer(customer_id2, customer_name2):
+                return render_template("delete.html", item="Customer", id=customer_id2, name=customer_name2)
+            else:
+                return render_template("error.html", code=300, message="Customer ID not matched")
 
         # Cancel Order
         order_id = request.form.get("order_id")
@@ -88,6 +91,14 @@ def new():
     if request.method == "POST":
         value = request.form.get("hidden")
         copy_to_clipboard(value)
+        return redirect("/demo")
+
+@app.route("/delete", methods=["POST"])
+def delete():
+    if request.method == "POST":
+        id = request.form.get("hidden_id")
+        name = request.form.get("hidden_name")
+        delete_customer(id, name)
         return redirect("/demo")
 
 if __name__ == '__main__':
