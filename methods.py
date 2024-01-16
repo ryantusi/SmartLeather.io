@@ -1,4 +1,6 @@
 import pyperclip
+import shutil
+from pathlib import Path
 from cs50 import SQL
 
 

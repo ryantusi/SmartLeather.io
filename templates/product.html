@@ -49,7 +49,7 @@
             <div class="container">
                 <div class="row row--center">
                 <div class="price-box__img">
-                    <img src="/static/QR_codes/{{ id }}.png" width="100" height="100"/>
+                    <img src="/static/QR_codes/{{ id }}.png" width="150" height="150"/>
                 </div>
                 <h1 class="price-box__title">
                     New <span class="red">{{ item }}</span> Created
@@ -57,10 +57,16 @@
                 <p class="price-box__people">
                     Click Copy button to copy <span class="blue">{{ content }}</span>
                 </p>
-                <form id="creation" class="form" action="/new" method="POST">
-                    <input type="hidden" id="hidden" name="hidden" value="{{ content }}">
-                    <div class="price-box__btn">
-                        <button type="submit" class="btn btn--purple btn--width">Copy</button>
+                <form id="creation" class="form" action="/product" method="POST">
+                    <input type="hidden" id="hidden1" name="hidden1" value="{{ id }}">
+                    <div class="site__box-link">
+                        <button class="btn btn--width" type="submit">Download</button>
+                    </div>
+                </form>
+                <form id="creation" class="form" action="/product" method="GET">
+                    <input type="hidden" id="hidden2" name="hidden2" value="{{ content }}">
+                    <div class="site__box-link">
+                        <button class="btn btn--revert btn--width" type="submit">Copy</a>
                     </div>
                 </form>
             </div>

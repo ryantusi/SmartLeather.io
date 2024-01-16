@@ -1,5 +1,5 @@
 from cs50 import SQL
-from flask import Flask, redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, session, send_file
 from flask_session import Session
 
 from qr_generator import generate_qr_code
@@ -46,7 +46,7 @@ def demo():
             }
             generate_qr_code(qr_details)
             add_product(qr_details)
-            return render_template("new.html", title="creation", item="Product", content=f"QR-ID: {qr_id} Product-ID: {product_id}", id=qr_id)
+            return render_template("product.html", title="creation", item="Product", content=f"QR-ID: {qr_id} Product-ID: {product_id}", id=qr_id)
         
         # Delete Product
         product_name2 = request.form.get("product_name2")
@@ -72,7 +72,7 @@ def demo():
             if customer_exists(new_customer) == False:
                 new_customer_id = customer_id_generation("PVTLTD786")
                 add_customer(new_customer_id, new_customer)
-                return render_template("new.html", title="creation", item="Customer", content=new_customer_id)
+                return render_template("customer.html", title="creation", item="Customer", content=new_customer_id)
             else:
                 id = customer_exists(new_customer)
                 return render_template("error.html", code="300", message=f"Customer already exists with ID {id}")
@@ -97,10 +97,21 @@ def demo():
 
         return render_template("demo.html")
 
-@app.route("/new", methods=["POST"])
-def new():
+@app.route("/customer", methods=["POST"])
+def customer():
     if request.method == "POST":
         value = request.form.get("hidden")
+        copy_to_clipboard(value)
+        return redirect("/demo")
+
+@app.route("/product", methods=["GET", "POST"])
+def product():
+    if request.method == "POST":
+        file = request.form.get("hidden1")
+        filename = f"static/QR_codes/{file}.png"
+        return send_file(filename, as_attachment=True)
+    elif request.method == "GET":
+        value = request.args.get("hidden2")
         copy_to_clipboard(value)
         return redirect("/demo")
 
