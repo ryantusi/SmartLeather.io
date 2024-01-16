@@ -43,3 +43,12 @@ def customer_id_generation(passcode):
     db.execute("UPDATE constants SET Customer_ID = ? WHERE key = ?;", new, key)
     return new
 
+def product_id_generation(passcode):
+    if passcode != key:
+        return 0
+    row = db.execute("SELECT Product_ID FROM constants WHERE key = ?;", key)
+    count = row[0]["Product_ID"].replace("PD", "")
+    count = int(count) + 1
+    new = "PD" + str(count)
+    db.execute("UPDATE constants SET Product_ID = ? WHERE key = ?;", new, key)
+    return new
