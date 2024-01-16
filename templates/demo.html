@@ -17,7 +17,7 @@
     
         <!-- Bootstrap JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <title>SmartLeather.io - Demo</title>
+        <title>SmartLeather.io - {% block title %}Demo{% endblock %}</title>
     </head>    
     <body>
         <header class="header">
@@ -45,7 +45,7 @@
             </div>
         </header>
 
-        <h1>{{ msg }}</h1>
+        {% block main %}
 
         <div class="sect sect--padding-bottom">
             <div class="container">
@@ -521,6 +521,7 @@
                 </div>
             </div>
         </footer>
+        {% endblock %}
         <script>
             $("#myCarousel").carousel({
                 interval: false
