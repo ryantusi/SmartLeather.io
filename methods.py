@@ -52,3 +52,6 @@ def check_customer(id, name):
 def delete_customer(id, name):
     db.execute("DELETE FROM customers WHERE Customer_ID = ? AND Customer_Name = ?;", id, name)
 
+
+def add_product(data):
+    db.execute("INSERT INTO products (QR_ID, Product_ID, Product_Name, Product_Price) VALUES (?, ?, ?, ?)", data["QR_ID"], data["Product_ID"], data["Product_Name"], data["Product_Price"])

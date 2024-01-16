@@ -2,14 +2,10 @@ import qrcode
 import os
 import json
 
-from id_generation import qr_id_generation
-
 def generate_qr_code(data_dict):
-    global qr_counter
 
     # Generate a simple QR ID using a passcode to access database for QR ID counter
-    qr_id = qr_id_generation("PVTLTD786")
-    data_dict["QR_ID"] = qr_id
+    qr_id = data_dict["QR_ID"]
     print(data_dict)
 
     # Convert the dictionary to a JSON string
@@ -34,15 +30,14 @@ def generate_qr_code(data_dict):
     qr_filename = f"static/QR_codes/{qr_id}.png"
     qr_image.save(qr_filename)
 
-    return qr_id
 
 # Example usage:
 if __name__ == "__main__":
     data_to_encode = {
     "product_name": "loafers",
     "product_id": 101,
-    "price": 100
+    "price": 100,
+    "QR_ID": "QR101"
     }
-    qr_id = generate_qr_code(data_to_encode)
-
-    print(f"QR ID: {qr_id}")
+    
+    

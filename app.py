@@ -3,8 +3,8 @@ from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 
 from qr_generator import generate_qr_code
-from id_generation import product_id_generation, job_card_generation, order_id_generation, customer_id_generation
-from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer
+from id_generation import product_id_generation, job_card_generation, order_id_generation, customer_id_generation, qr_id_generation
+from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, add_product
 
 app = Flask(__name__)
 db = SQL("sqlite:///management.db")
@@ -37,13 +37,16 @@ def demo():
 
         if (product_name1 and product_price):
             product_id = product_id_generation("PVTLTD786")
+            qr_id = qr_id_generation("PVTLTD786")
             qr_details = {
+                "QR_ID": qr_id,
                 "Product_ID": product_id,
                 "Product_Name": product_name1,
                 "Product_Price": product_price
             }
-            qr_id = generate_qr_code(qr_details)
-            return render_template("new.html", title="creation", item="Product", id=f"QR-ID: {qr_id} Product-ID: {product_id}")
+            generate_qr_code(qr_details)
+            add_product(qr_details)
+            return render_template("new.html", title="creation", item="Product", content=f"QR-ID: {qr_id} Product-ID: {product_id}", id=qr_id)
         
         # Delete Product
         product_name2 = request.form.get("product_name2")
@@ -69,7 +72,7 @@ def demo():
             if customer_exists(new_customer) == False:
                 new_customer_id = customer_id_generation("PVTLTD786")
                 add_customer(new_customer_id, new_customer)
-                return render_template("new.html", title="creation", item="Customer", id=new_customer_id)
+                return render_template("new.html", title="creation", item="Customer", content=new_customer_id)
             else:
                 id = customer_exists(new_customer)
                 return render_template("error.html", code="300", message=f"Customer already exists with ID {id}")
