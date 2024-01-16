@@ -4,7 +4,7 @@ from flask_session import Session
 
 from qr_generator import generate_qr_code
 from id_generation import product_id_generation, job_card_generation, order_id_generation, customer_id_generation, qr_id_generation
-from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, get_products, add_product, check_product, delete_product
+from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, get_products, add_product, check_product, delete_product, add_order
 
 app = Flask(__name__)
 db = SQL("sqlite:///management.db")
@@ -61,13 +61,19 @@ def demo():
                 return render_template("error.html", code=300, message="Product ID or QR ID not correct for the product")
 
         # New Order
-        customer_name = request.form.get("customer_name")
         customer_id = request.form.get("customer_id")
         product_id3 = request.form.get("product_id3")
         quantity = request.form.get("quantity")
 
-        if (customer_id and customer_name):
-            pass
+        if (customer_id and product_id3):
+            check_p = db.execute("SELECT * FROM products WHERE Product_ID = ?", product_id3)
+            check_c = db.execute("SELECT * FROM customers WHERE Customer_ID = ?", customer_id)
+            if not (check_p and check_c):
+                return render_template("error.html", code=300, message="Incorrect Information Submitted")
+            else:
+                new_order_id = order_id_generation("PVTLTD786")
+                add_order(new_order_id, customer_id, product_id3, quantity)
+                return render_template("order.html", item="Order", content=f"Order ID: {new_order_id}")
 
         # New Customer
         new_customer = request.form.get("new_customer_name")
@@ -93,10 +99,11 @@ def demo():
                 return render_template("error.html", code=300, message="Customer ID not matched")
 
         # Cancel Order
+        customer_id3 = request.form.get("customer_id3")
         order_id = request.form.get("order_id")
-        job_card = request.form.get("job_card")
+        date = request.form.get("date")
 
-        if (order_id and job_card):
+        if (order_id and date):
             pass
 
         return render_template("demo.html")
@@ -133,6 +140,13 @@ def deleteproduct():
         qr = request.form.get("hidden_id1")
         id = request.form.get("hidden_id2")
         delete_product(qr, id)
+        return redirect("/demo")
+
+@app.route("/order", methods=["POST"])
+def order():
+    if request.method == "POST":
+        value = request.form.get("hidden")
+        copy_to_clipboard(value)
         return redirect("/demo")
 
 if __name__ == '__main__':
