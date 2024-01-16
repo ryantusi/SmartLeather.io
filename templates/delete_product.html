@@ -17,7 +17,7 @@
     
         <!-- Bootstrap JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <title>SmartLeather.io - Create</title>
+        <title>SmartLeather.io - Delete</title>
     </head>    
     <body>
         <header class="header">
@@ -48,16 +48,18 @@
         <div class="sect sect--padding-bottom">
             <div class="container">
                 <div class="row row--center">
+                <div class="price-box__img"></div>
                 <h1 class="price-box__title">
-                    New <span class="red">{{ item }}</span> Created
+                    Confirm <span class="red">{{ item }}</span> Deletion?
                 </h1>
                 <p class="price-box__people">
-                    Click Copy button to copy <span class="blue">{{ content }}</span>
+                    Click button to confirm {{ item }} <span class="blue">{{ name }} - {{ id }}</span> deletion.
                 </p>
-                <form id="creation" class="form" action="/customer" method="POST">
-                    <input type="hidden" id="hidden" name="hidden" value="{{ content }}">
+                <form id="creation" class="form" action="/deleteproduct" method="POST">
+                    <input type="hidden" id="hidden_id1" name="hidden_id1" value="{{ id1 }}">
+                    <input type="hidden" id="hidden_id2" name="hidden_id2" value="{{ id2 }}">
                     <div class="price-box__btn">
-                        <button type="submit" class="btn btn--purple btn--width">Copy</button>
+                        <button type="submit" class="btn btn--purple btn--width">Delete</button>
                     </div>
                 </form>
             </div>

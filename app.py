@@ -4,7 +4,7 @@ from flask_session import Session
 
 from qr_generator import generate_qr_code
 from id_generation import product_id_generation, job_card_generation, order_id_generation, customer_id_generation, qr_id_generation
-from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, add_product
+from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, get_products, add_product, check_product, delete_product
 
 app = Flask(__name__)
 db = SQL("sqlite:///management.db")
@@ -29,7 +29,8 @@ def index():
 def demo():
     if request.method == "GET":
         CUSTOMERS = get_customers()
-        return render_template("demo.html", customers = CUSTOMERS)
+        PRODUCTS = get_products()
+        return render_template("demo.html", customers = CUSTOMERS, products = PRODUCTS)
     else:
         # New Product
         product_name1 = request.form.get("product_name1")
@@ -51,10 +52,13 @@ def demo():
         # Delete Product
         product_name2 = request.form.get("product_name2")
         product_id2 = request.form.get("product_id2")
-        qr_id = request.form.get("qr_id")
+        qr_id2 = request.form.get("qr_id")
 
-        if (product_name2 and product_id2):
-            pass
+        if (qr_id2 and product_id2):
+            if check_product(product_name2, product_id2, qr_id2):
+                return render_template("delete_product.html", item="Product", name=product_name2, id1=qr_id2, id2=product_id2)
+            else:
+                return render_template("error.html", code=300, message="Product ID or QR ID not correct for the product")
 
         # New Order
         customer_name = request.form.get("customer_name")
@@ -84,7 +88,7 @@ def demo():
 
         if (customer_name2 and customer_id2):
             if check_customer(customer_id2, customer_name2):
-                return render_template("delete.html", item="Customer", id=customer_id2, name=customer_name2)
+                return render_template("delete_customer.html", item="Customer", id=customer_id2, name=customer_name2)
             else:
                 return render_template("error.html", code=300, message="Customer ID not matched")
 
@@ -115,12 +119,20 @@ def product():
         copy_to_clipboard(value)
         return redirect("/demo")
 
-@app.route("/delete", methods=["POST"])
-def delete():
+@app.route("/deletecustomer", methods=["POST"])
+def deletecustomer():
     if request.method == "POST":
         id = request.form.get("hidden_id")
         name = request.form.get("hidden_name")
         delete_customer(id, name)
+        return redirect("/demo")
+
+@app.route("/deleteproduct", methods=["POST"])
+def deleteproduct():
+    if request.method == "POST":
+        qr = request.form.get("hidden_id1")
+        id = request.form.get("hidden_id2")
+        delete_product(qr, id)
         return redirect("/demo")
 
 if __name__ == '__main__':

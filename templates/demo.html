@@ -96,9 +96,10 @@
                                 <form id="deletion" class="form" action="/demo" method="POST">
                                     <div class="form-group">
                                         <select class="form__field form__select" id="product_name2" name="product_name2" required>
-                                            <option selected value>Choose topic*</option>
-                                            <option value=1>Product n</option>
-                                            <option value=2>Product n+1</option>
+                                            <option selected disabled>Choose topic*</option>
+                                            {% for product in products %}
+                                                <option value="{{ product }}">{{ product }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                     <div class="form-group">

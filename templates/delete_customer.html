@@ -53,9 +53,9 @@
                     Confirm <span class="red">{{ item }}</span> Deletion?
                 </h1>
                 <p class="price-box__people">
-                    Click button to confirm customer <span class="blue">{{ name }} - {{ id }}</span> deletion.
+                    Click button to confirm {{ item }} <span class="blue">{{ name }} - {{ id }}</span> deletion.
                 </p>
-                <form id="creation" class="form" action="/delete" method="POST">
+                <form id="creation" class="form" action="/deletecustomer" method="POST">
                     <input type="hidden" id="hidden_name" name="hidden_name" value="{{ name }}">
                     <input type="hidden" id="hidden_id" name="hidden_id" value="{{ id }}">
                     <div class="price-box__btn">
