@@ -2,7 +2,8 @@ from cs50 import SQL
 from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 
-from id_generation import qr_id_generation, job_card_generation, order_id_generation, customer_id_generation
+from qr_generator import generate_qr_code
+from id_generation import product_id_generation, job_card_generation, order_id_generation, customer_id_generation
 from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer
 
 app = Flask(__name__)
@@ -32,10 +33,17 @@ def demo():
     else:
         # New Product
         product_name1 = request.form.get("product_name1")
-        product_id1 = request.form.get("product_id1")
+        product_price = request.form.get("product_price")
 
-        if (product_name1 and product_id1):
-            pass
+        if (product_name1 and product_price):
+            product_id = product_id_generation("PVTLTD786")
+            qr_details = {
+                "Product_ID": product_id,
+                "Product_Name": product_name1,
+                "Product_Price": product_price
+            }
+            qr_id = generate_qr_code(qr_details)
+            return render_template("new.html", title="creation", item="Product", id=f"QR-ID: {qr_id} Product-ID: {product_id}")
         
         # Delete Product
         product_name2 = request.form.get("product_name2")

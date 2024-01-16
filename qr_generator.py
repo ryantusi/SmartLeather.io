@@ -9,6 +9,8 @@ def generate_qr_code(data_dict):
 
     # Generate a simple QR ID using a passcode to access database for QR ID counter
     qr_id = qr_id_generation("PVTLTD786")
+    data_dict["QR_ID"] = qr_id
+    print(data_dict)
 
     # Convert the dictionary to a JSON string
     json_data = json.dumps(data_dict)
@@ -29,18 +31,18 @@ def generate_qr_code(data_dict):
     qr_image = qr.make_image(fill_color="black", back_color="white")
 
     # Save the QR code image with the unique QR ID as the filename
-    qr_filename = f"{qr_id}.png"
+    qr_filename = f"static/QR_codes/{qr_id}.png"
     qr_image.save(qr_filename)
 
-    return qr_id, qr_filename
+    return qr_id
 
 # Example usage:
 if __name__ == "__main__":
     data_to_encode = {
     "product_name": "loafers",
-    "product_id": 101
+    "product_id": 101,
+    "price": 100
     }
-    qr_id, qr_filename = generate_qr_code(data_to_encode)
+    qr_id = generate_qr_code(data_to_encode)
 
     print(f"QR ID: {qr_id}")
-    print(f"QR Code saved as: {qr_filename}")
