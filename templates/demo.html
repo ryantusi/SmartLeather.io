@@ -45,6 +45,8 @@
             </div>
         </header>
 
+        <h1>{{ msg }}</h1>
+
         <div class="sect sect--padding-bottom">
             <div class="container">
                 <div class="row row--center">
@@ -191,10 +193,11 @@
                             
                                 <form id="deletion" class="form" action="/demo" method="POST">
                                     <div class="form-group">
-                                        <select class="form__field form__select" id="product_name2" name="product_name2" required>
-                                            <option selected value>Choose Name*</option>
-                                            <option value=1>Customer n</option>
-                                            <option value=2>Customer n+1</option>
+                                        <select class="form__field form__select" id="customer_name2" name="customer_name2" required>
+                                            <option selected disabled>Choose Name*</option>
+                                            {% for customer in customers %}
+                                                <option value="{{ customer }}">{{ customer }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                     <div class="form-group">
