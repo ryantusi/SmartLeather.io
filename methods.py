@@ -87,3 +87,12 @@ def add_order(order_id, customer_id, product_id, quantity):
     total = int(quantity) * float(price)
     db.execute("INSERT INTO orders (Order_ID, Customer_ID, Product_ID, Quantity, Price, Status) VALUES (?, ?, ?, ?, ?, 'NA')", order_id, customer_id, product_id, quantity, total)
 
+def check_order(id1, id2):
+    row = db.execute("SELECT * FROM orders WHERE Order_ID = ? AND Customer_ID = ?", id1, id2)
+    if row:
+        return True
+    else:
+        return False
+
+def delete_order(id, customer, date):
+    db.execute("DELETE FROM orders WHERE Order_ID = ? AND Customer_ID = ? AND Date = ?", id, customer, date)

@@ -4,7 +4,7 @@ from flask_session import Session
 
 from qr_generator import generate_qr_code
 from id_generation import product_id_generation, job_card_generation, order_id_generation, customer_id_generation, qr_id_generation
-from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, get_products, add_product, check_product, delete_product, add_order
+from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, get_products, add_product, check_product, delete_product, add_order, check_order, delete_order
 
 app = Flask(__name__)
 db = SQL("sqlite:///management.db")
@@ -101,10 +101,13 @@ def demo():
         # Cancel Order
         customer_id3 = request.form.get("customer_id3")
         order_id = request.form.get("order_id")
-        date = request.form.get("date")
+        DATE = request.form.get("date")
 
-        if (order_id and date):
-            pass
+        if (order_id and DATE):
+            if check_order(order_id, customer_id3):
+                return render_template("delete_order.html", item="Order", id1=order_id, id2=customer_id3, date=DATE)
+            else:
+                return render_template("error.html", code=300, message="Order ID incorrect")
 
         return render_template("demo.html")
 
@@ -147,6 +150,15 @@ def order():
     if request.method == "POST":
         value = request.form.get("hidden")
         copy_to_clipboard(value)
+        return redirect("/demo")
+
+@app.route("/deleteorder", methods=["POST"])
+def deleteorder():
+    if request.method == "POST":
+        id1 = request.form.get("hidden1")
+        id2 = request.form.get("hidden2")
+        date = request.form.get("hidden3")
+        delete_order(id1, id2, date)
         return redirect("/demo")
 
 if __name__ == '__main__':
