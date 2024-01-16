@@ -4,23 +4,6 @@ from cs50 import SQL
 
 db = SQL("sqlite:///management.db")
 
-def customer_exists(name):
-    row = db.execute("SELECT Customer_ID FROM customers WHERE Customer_Name = ?;", name)
-    if row:
-        return row[0]["Customer_ID"]
-    else:
-        return False
-
-def add_customer(id, name):
-    db.execute("INSERT INTO customers (Customer_ID, Customer_Name) VALUES (?, ?)", id, name)
-
-def get_customers():
-    row = db.execute("SELECT * FROM customers;")
-    customers = []
-    for val in row:
-        customers.append(val["Customer_Name"])
-    return customers
-
 def copy_to_clipboard(text):
     """Copies the given text to the clipboard.
 
@@ -32,4 +15,40 @@ def copy_to_clipboard(text):
     """
 
     pyperclip.copy(text)
+
+
+def customer_exists(name):
+    row = db.execute("SELECT Customer_ID FROM customers WHERE Customer_Name = ?;", name)
+    if row:
+        return row[0]["Customer_ID"]
+    else:
+        return False
+
+
+def add_customer(id, name):
+    db.execute("INSERT INTO customers (Customer_ID, Customer_Name) VALUES (?, ?)", id, name)
+
+
+def get_customers():
+    row = db.execute("SELECT * FROM customers;")
+    customers = []
+    for val in row:
+        customers.append(val["Customer_Name"])
+    return customers
+
+
+def check_customer(id, name):
+    row = db.execute("SELECT Customer_Name FROM customers WHERE Customer_ID = ?", id)
+    if row:
+        cus_name = row[0]["Customer_Name"]
+        if cus_name == name:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
+def delete_customer(id, name):
+    db.execute("DELETE FROM customers WHERE Customer_ID = ? AND Customer_Name = ?;", id, name)
 
