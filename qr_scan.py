@@ -69,7 +69,11 @@ class QRScanner:
 
                         # Append the details to the list
                         self.scanned_data.append(details_dict)
-                        self.write_data(details_dict)
+                        if self.check_data(details_dict):
+                            self.update_data(details_dict)
+                            self.stop_scanner()
+                        else:
+                            self.write_data(details_dict)
 
                         # Segregate the timestamp components
                         #year, month, day, hour, minute, second = self.segregate_timestamp(timestamp)
@@ -95,11 +99,46 @@ class QRScanner:
     def clear_scanned_data(self):
         self.scanned_data = []
 
+    def add_revenue(self, data):
+        product_id = data["Product_ID"]
+        quantity = int(data["Quantity"])
+        price = db.execute("SELECT Product_Price FROM products WHERE Product_ID = ?", product_id)
+        product_price = price[0]["Product_Price"]
+        total_price = float(product_price) * quantity 
+        year, month, day, hour, minute, second = self.segregate_timestamp(data["Timestamp"])
+        row = db.execute("SELECT * FROM revenue WHERE YEAR = ? AND MONTH = ?", year, month)
+
+        if row:
+            db.execute("UPDATE revenue SET Total_Revenue = Total_Revenue + ? WHERE YEAR = ? AND MONTH = ?", total_price, year, month)
+        else:
+            db.execute("INSERT INTO revenue (YEAR, MONTH, Total_Revenue) VALUES (?, ?, ?)", year, month, total_price)
+
+    def check_data(self, data):
+        col1 = data["Order_ID"]
+        col2 = data["Customer_ID"]
+        col3 = data["Product_ID"]
+        row = db.execute("SELECT Completed FROM jobs WHERE Order_ID = ? AND Customer_ID = ? AND Product_ID = ?", col1, col2, col3)
+        complete = int(row[0]["Completed"])
+        total = int(data["Quantity"])
+
+        if complete == total:
+            return True
+        else:
+            return False
+
+    def update_data(self, data):
+        col1 = data["Order_ID"]
+        col2 = data["Customer_ID"]
+        col3 = data["Product_ID"]
+
+        db.execute("UPDATE jobs SET Status = 'COMPLETE' WHERE Order_ID = ? AND Customer_ID = ? AND Product_ID = ?", col1, col2, col3)
+        db.execute("UPDATE orders SET Status = 'COMPLETE' WHERE Order_ID = ? AND Customer_ID = ? AND Product_ID = ?", col1, col2, col3)
+        db.execute("DELETE FROM jobs WHERE  Order_ID = ? AND Customer_ID = ? AND Product_ID = ?", col1, col2, col3)
+        self.add_revenue(data)
+
     def write_data(self, data):
-        col1 = data["QR_ID"]
-        col2 = data["Product_ID"]
-        col3 = data["Product_Name"]
-        col4 = data["Product_Price"]
-        col5 = data["Timestamp"]
-        db.execute("INSERT INTO demo (QR_ID, Product_ID, Product_Name, Product_Price, Timestamp) VALUES (?, ?, ?, ?, ?)", col1, col2, col3, col4, col5)
+        col1 = data["Order_ID"]
+        col2 = data["Customer_ID"]
+        col3 = data["Product_ID"]
+        db.execute("UPDATE jobs SET Completed = Completed + 1 WHERE Order_ID = ? AND Customer_ID = ? AND Product_ID = ?", col1, col2, col3)
 

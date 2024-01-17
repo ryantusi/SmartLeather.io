@@ -184,7 +184,6 @@ def scanpage():
 @app.route('/start_scanner')
 def start_scanner():
     qr_scanner.start_scanner()
-    data = qr_scanner.get_scanned_data()
     return 'Scanner started'
 
 @app.route('/stop_scanner')
