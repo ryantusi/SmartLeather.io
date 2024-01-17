@@ -5,7 +5,7 @@ import json
 def generate_qr_code(data_dict):
 
     # Generate a simple QR ID using a passcode to access database for QR ID counter
-    qr_id = data_dict["QR_ID"]
+    qr_id = data_dict["Order_ID"]
     print(data_dict)
 
     # Convert the dictionary to a JSON string

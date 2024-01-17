@@ -56,7 +56,7 @@ def delete_customer(id, name):
 
 
 def add_product(data):
-    db.execute("INSERT INTO products (QR_ID, Product_ID, Product_Name, Product_Price) VALUES (?, ?, ?, ?)", data["QR_ID"], data["Product_ID"], data["Product_Name"], data["Product_Price"])
+    db.execute("INSERT INTO products (Product_ID, Product_Name, Product_Price) VALUES (?, ?, ?)", data["Product_ID"], data["Product_Name"], data["Product_Price"])
 
 
 def get_products():
@@ -67,8 +67,8 @@ def get_products():
     return products
 
 
-def check_product(name, id, qr):
-    row = db.execute("SELECT Product_Name FROM products WHERE Product_ID = ? AND QR_ID = ?", id, qr)
+def check_product(name, id):
+    row = db.execute("SELECT Product_Name FROM products WHERE Product_ID = ?", id)
     if row:
         if row[0]["Product_Name"] == name:
             return True
@@ -77,8 +77,8 @@ def check_product(name, id, qr):
     else:
         return False
 
-def delete_product(qr_id, product_id):
-    db.execute("DELETE FROM products WHERE QR_ID = ? AND Product_ID = ?", qr_id, product_id)
+def delete_product(product_id):
+    db.execute("DELETE FROM products WHERE Product_ID = ?", product_id)
 
 
 def add_order(order_id, customer_id, product_id, quantity):
@@ -87,8 +87,8 @@ def add_order(order_id, customer_id, product_id, quantity):
     total = int(quantity) * float(price)
     db.execute("INSERT INTO orders (Order_ID, Customer_ID, Product_ID, Quantity, Price, Status) VALUES (?, ?, ?, ?, ?, 'NA')", order_id, customer_id, product_id, quantity, total)
 
-def check_order(id1, id2):
-    row = db.execute("SELECT * FROM orders WHERE Order_ID = ? AND Customer_ID = ?", id1, id2)
+def check_order(id1, id2, date):
+    row = db.execute("SELECT * FROM orders WHERE Order_ID = ? AND Customer_ID = ? AND Date = ?", id1, id2, date)
     if row:
         return True
     else:

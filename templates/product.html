@@ -1,6 +1,6 @@
 {% extends "demo.html" %}
 {% block title %}
-    Create Product
+    Creation
 {% endblock %}
 
 {% block main %}
@@ -8,22 +8,13 @@
         <div class="sect sect--padding-bottom">
             <div class="container">
                 <div class="row row--center">
-                <div class="price-box__img">
-                    <img src="/static/QR_codes/{{ id }}.png" width="150" height="150"/>
-                </div>
                 <h1 class="price-box__title">
                     New <span class="red">{{ item }}</span> Created
                 </h1>
                 <p class="price-box__people">
-                    Click Copy button to copy <span class="blue">{{ content }}</span>
+                    Click Copy button to copy {{ item }} ID: <span class="blue">{{ content }}</span>
                 </p>
                 <form id="creation" class="form" action="/product" method="POST">
-                    <input type="hidden" id="hidden1" name="hidden1" value="{{ id }}">
-                    <div class="site__box-link">
-                        <button class="btn btn--width" type="submit">Download</button>
-                    </div>
-                </form>
-                <form id="creation" class="form" action="/product" method="GET">
                     <input type="hidden" id="hidden2" name="hidden2" value="{{ content }}">
                     <div class="site__box-link">
                         <button class="btn btn--revert btn--width" type="submit">Copy</a>

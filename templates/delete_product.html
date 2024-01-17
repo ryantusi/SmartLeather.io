@@ -1,6 +1,6 @@
 {% extends "demo.html" %}
 {% block title %}
-    Delete Product
+    Deletion
 {% endblock %}
 
 {% block main %}
@@ -13,10 +13,9 @@
                     Confirm <span class="red">{{ item }}</span> Deletion?
                 </h1>
                 <p class="price-box__people">
-                    Click button to confirm {{ item }} <span class="blue">{{ name }} - {{ id }}</span> deletion.
+                    Click button to confirm {{ item }} {{ name }}<span class="blue">{{ id2 }}</span> deletion.
                 </p>
                 <form id="creation" class="form" action="/deleteproduct" method="POST">
-                    <input type="hidden" id="hidden_id1" name="hidden_id1" value="{{ id1 }}">
                     <input type="hidden" id="hidden_id2" name="hidden_id2" value="{{ id2 }}">
                     <div class="price-box__btn">
                         <button type="submit" class="btn btn--purple btn--width">Delete</button>
