@@ -1,12 +1,17 @@
+from cs50 import SQL
 from datetime import datetime
 import cv2
 from pyzbar.pyzbar import decode
 import numpy as np
 import time
+import json
+
+db = SQL("sqlite:///management.db")
 
 class QRScanner:
     def __init__(self):
         self.cap = None
+        self.scanned_data = []
 
     def segregate_timestamp(self, timestamp_str):
         timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S")
@@ -33,18 +38,26 @@ class QRScanner:
                     cv2.polylines(frame, [pts], isClosed=True, color=(0, 255, 0), thickness=2)
 
                     # Get the QR code data
-                    product_id = obj.data.decode('utf-8')
+                    details = obj.data.decode('utf-8')
+                    try:
+                        # Try to decode the JSON-formatted string into a Python dictionary
+                        details_dict = json.loads(details)
+
+                        # Get the current timestamp
+                        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        details_dict["Timestamp"] = timestamp
+
+                    except json.JSONDecodeError as e:
+                        # Handle the case where the data is not valid JSON
+                        print(f"Error decoding JSON: {e}")
 
                     # Check if the specified delay has passed since the last processed QR code
                     current_time = time.time()
                     if current_time - last_process_time >= delay_between_scans:
                         last_process_time = current_time
 
-                        # Get the current timestamp
-                        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
                         # Do something with the QR code data and timestamp (e.g., print them)
-                        print(f"Scanned QR Code: {product_id} | Timestamp: {timestamp}")
+                        #print(f"Scanned QR Code: {details_dict}")
 
                         # Display the QR code data and timestamp on the frame
                         font = cv2.FONT_HERSHEY_SIMPLEX
@@ -52,20 +65,41 @@ class QRScanner:
                         font_scale = 0.5
                         font_color = (255, 255, 255)
                         line_type = 1
-                        cv2.putText(frame, f"ID: {product_id} | Time: {timestamp}", bottom_left_corner, font, font_scale, font_color, line_type)
+                        cv2.putText(frame, f"ID: {details_dict} | Time: {timestamp}", bottom_left_corner, font, font_scale, font_color, line_type)
+
+                        # Append the details to the list
+                        self.scanned_data.append(details_dict)
+                        self.write_data(details_dict)
 
                         # Segregate the timestamp components
-                        year, month, day, hour, minute, second = self.segregate_timestamp(timestamp)
-                        print(f"Year: {year}, Month: {month}, Day: {day}, Hour: {hour}, Minute: {minute}, Second: {second}")
+                        #year, month, day, hour, minute, second = self.segregate_timestamp(timestamp)
+                        #print(f"Year: {year}, Month: {month}, Day: {day}, Hour: {hour}, Minute: {minute}, Second: {second}")
 
             # Display the frame with the rectangles around the QR codes
             cv2.imshow("QR Code Scanner", frame)
 
-            # Press 'Esc' to exit
-            if cv2.waitKey(1) & 0xFF == 27:
+            # Non-blocking wait key
+            key = cv2.waitKey(1) & 0xFF
+            if key == 27:  # Press 'Esc' to exit
                 break
+
 
     def stop_scanner(self):
         if self.cap is not None:
             self.cap.release()
             cv2.destroyAllWindows()
+
+    def get_scanned_data(self):
+        return self.scanned_data
+
+    def clear_scanned_data(self):
+        self.scanned_data = []
+
+    def write_data(self, data):
+        col1 = data["QR_ID"]
+        col2 = data["Product_ID"]
+        col3 = data["Product_Name"]
+        col4 = data["Product_Price"]
+        col5 = data["Timestamp"]
+        db.execute("INSERT INTO demo (QR_ID, Product_ID, Product_Name, Product_Price, Timestamp) VALUES (?, ?, ?, ?, ?)", col1, col2, col3, col4, col5)
+
