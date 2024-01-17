@@ -4,76 +4,68 @@ from pyzbar.pyzbar import decode
 import numpy as np
 import time
 
+class QRScanner:
+    def __init__(self):
+        self.cap = None
 
-def segregate_timestamp(timestamp_str):
-    # Convert the timestamp string to a datetime object
-    timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S")
+    def segregate_timestamp(self, timestamp_str):
+        timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S")
+        return timestamp.year, timestamp.month, timestamp.day, timestamp.hour, timestamp.minute, timestamp.second
 
-    # Extract components from the timestamp
-    year, month, day, hour, minute, second = (
-        timestamp.year, timestamp.month, timestamp.day,
-        timestamp.hour, timestamp.minute, timestamp.second
-    )
+    def start_scanner(self, camera_index=0, delay_between_scans=3):
+        self.cap = cv2.VideoCapture(camera_index)
+        last_process_time = 0
 
-    return year, month, day, hour, minute, second
+        while True:
+            _, frame = self.cap.read()
 
-def scan_qr_code(camera_index=0, delay_between_scans=3):
-    # Set up the camera
-    cap = cv2.VideoCapture(camera_index)
+            # Convert the frame to grayscale for better QR code detection
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    last_process_time = 0
+            # Detect QR codes in the frame
+            decoded_objects = decode(gray)
 
-    while True:
-        _, frame = cap.read()
+            for obj in decoded_objects:
+                # Draw a rectangle around the QR code
+                points = obj.polygon
+                if len(points) == 4:
+                    pts = np.array([(point.x, point.y) for point in points], dtype=int)
+                    cv2.polylines(frame, [pts], isClosed=True, color=(0, 255, 0), thickness=2)
 
-        # Convert the frame to grayscale for better QR code detection
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                    # Get the QR code data
+                    product_id = obj.data.decode('utf-8')
 
-        # Detect QR codes in the frame
-        decoded_objects = decode(gray)
+                    # Check if the specified delay has passed since the last processed QR code
+                    current_time = time.time()
+                    if current_time - last_process_time >= delay_between_scans:
+                        last_process_time = current_time
 
-        for obj in decoded_objects:
-            # Draw a rectangle around the QR code
-            points = obj.polygon
-            if len(points) == 4:
-                pts = np.array([(point.x, point.y) for point in points], dtype=int)
-                cv2.polylines(frame, [pts], isClosed=True, color=(0, 255, 0), thickness=2)
+                        # Get the current timestamp
+                        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-                # Get the QR code data
-                product_id = obj.data.decode('utf-8')
+                        # Do something with the QR code data and timestamp (e.g., print them)
+                        print(f"Scanned QR Code: {product_id} | Timestamp: {timestamp}")
 
-                # Check if the specified delay has passed since the last processed QR code
-                current_time = time.time()
-                if current_time - last_process_time >= delay_between_scans:
-                    last_process_time = current_time
+                        # Display the QR code data and timestamp on the frame
+                        font = cv2.FONT_HERSHEY_SIMPLEX
+                        bottom_left_corner = (pts[0][0], pts[0][1] - 10)
+                        font_scale = 0.5
+                        font_color = (255, 255, 255)
+                        line_type = 1
+                        cv2.putText(frame, f"ID: {product_id} | Time: {timestamp}", bottom_left_corner, font, font_scale, font_color, line_type)
 
-                    # Get the current timestamp
-                    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        # Segregate the timestamp components
+                        year, month, day, hour, minute, second = self.segregate_timestamp(timestamp)
+                        print(f"Year: {year}, Month: {month}, Day: {day}, Hour: {hour}, Minute: {minute}, Second: {second}")
 
-                    # Do something with the QR code data and timestamp (e.g., print them)
-                    print(f"Scanned QR Code: {product_id} | Timestamp: {timestamp}")
+            # Display the frame with the rectangles around the QR codes
+            cv2.imshow("QR Code Scanner", frame)
 
-                    # Display the QR code data and timestamp on the frame
-                    font = cv2.FONT_HERSHEY_SIMPLEX
-                    bottom_left_corner = (pts[0][0], pts[0][1] - 10)
-                    font_scale = 0.5
-                    font_color = (255, 255, 255)
-                    line_type = 1
-                    cv2.putText(frame, f"ID: {product_id} | Time: {timestamp}", bottom_left_corner, font, font_scale, font_color, line_type)
+            # Press 'Esc' to exit
+            if cv2.waitKey(1) & 0xFF == 27:
+                break
 
-                    # Segregate the timestamp components
-                    year, month, day, hour, minute, second = segregate_timestamp(timestamp)
-                    print(f"Year: {year}, Month: {month}, Day: {day}, Hour: {hour}, Minute: {minute}, Second: {second}")
-
-        # Display the frame with the rectangles around the QR codes
-        cv2.imshow("QR Code Scanner", frame)
-
-        # Press 'Esc' to exit
-        if cv2.waitKey(1) & 0xFF == 27:
-            break
-
-    # Release the camera
-    cap.release()
-    cv2.destroyAllWindows()
-
-scan_qr_code()
+    def stop_scanner(self):
+        if self.cap is not None:
+            self.cap.release()
+            cv2.destroyAllWindows()

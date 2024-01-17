@@ -2,12 +2,14 @@ from cs50 import SQL
 from flask import Flask, redirect, render_template, request, session, send_file
 from flask_session import Session
 
+from qr_scan import QRScanner
 from qr_generator import generate_qr_code
 from id_generation import product_id_generation, job_card_generation, order_id_generation, customer_id_generation, qr_id_generation
 from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, get_products, add_product, check_product, delete_product, add_order, check_order, delete_order
 
 app = Flask(__name__)
 db = SQL("sqlite:///management.db")
+qr_scanner = QRScanner()
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -160,6 +162,21 @@ def deleteorder():
         date = request.form.get("hidden3")
         delete_order(id1, id2, date)
         return redirect("/demo")
+    
+@app.route("/scan", methods=["GET", "POST"])
+def scanpage():
+    if request.method == "GET":
+        return render_template("scan.html")
+
+@app.route('/start_scanner')
+def start_scanner():
+    qr_scanner.start_scanner()
+    return 'Scanner started'
+
+@app.route('/stop_scanner')
+def stop_scanner():
+    qr_scanner.stop_scanner()
+    return 'Scanner stopped'
 
 if __name__ == '__main__':
     app.run(debug=True)
