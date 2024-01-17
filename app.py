@@ -4,7 +4,7 @@ from flask_session import Session
 
 from qr_scan import QRScanner
 from qr_generator import generate_qr_code
-from id_generation import product_id_generation, job_card_generation, order_id_generation, customer_id_generation, qr_id_generation
+from id_generation import product_id_generation, order_id_generation, customer_id_generation
 from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, get_products, add_product, check_product, delete_product, add_order, check_order, delete_order
 
 app = Flask(__name__)
@@ -190,6 +190,10 @@ def start_scanner():
 def stop_scanner():
     qr_scanner.stop_scanner()
     return 'Scanner stopped'
+
+@app.route("/download")
+def download():
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True)
