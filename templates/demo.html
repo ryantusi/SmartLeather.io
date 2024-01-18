@@ -17,6 +17,8 @@
     
         <!-- Bootstrap JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <title>SmartLeather.io - {% block title %}Demo{% endblock %}</title>
     </head>    
     <body>
@@ -143,6 +145,72 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div id="home" class="sect sect--padding-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="site">
+                            <h1 class="site__title">Download Up-To-Date Data</h1><br>
+                            <h2 class="row__sub">View and know your data in excel sheet</h2><br>
+                            <div class="site__box-link">
+                                <button class="btn btn--purple btn-width" onclick="download()">Download</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sect sect--white">
+            <div class="container">
+                <div class="row">
+                    <h1 class="row__title">
+                        Visualized Dashboard
+                    </h1>
+                    <h2 class="row__sub">Explore and Analyze the Visualized Data</h2>
+                </div>
+        
+                <div class="row row--margin">
+                    <div class="col-md-6 article-pre__col">
+                        <div class="article-pre ">
+                            <div class="article-pre__img article-pre__img--1"></div>
+                            <h2 class="article-pre__info">
+                                <span class="article-pre__cat"><b>Revenue Line Graph</b></span>
+                            </h2>
+                        </div>
+                    </div>
+        
+                    <div class="col-md-6 article-pre__col">
+                        <a class="article-pre " href="/live">
+                        <div class="article-pre__img article-pre__img--2"></div>
+                        <h2 class="article-pre__info">
+                            <span class="article-pre__cat"><b>Live Dashboard on Orders/Jobs - Click</b></span>
+                        </h2>
+                        </a>
+                    </div>    
+                </div>
+
+                <div class="col-md-6 article-pre__col">
+                    <div class="article-pre ">
+                        <div class="article-pre__img article-pre__img--3"></div>
+                        <h2 class="article-pre__info">
+                            <span class="article-pre__cat"><b>Top Most Frequent Clients</b></span>
+                        </h2>
+                    </div>
+                </div>
+    
+                <div class="col-md-6 article-pre__col">
+                    <div class="article-pre ">
+                    <div class="article-pre__img article-pre__img--4"></div>
+                    <h2 class="article-pre__info">
+                        <span class="article-pre__cat"><b>Top Hot Selling Products</b></span>
+                    </h2>
+                    </div>
+                </div>    
+            </div>
             </div>
         </div>
 
@@ -343,12 +411,10 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="site">
-                            <h1 class="site__title">Start Your Scanner | Download Live Data</h1><br>
-                            <h2 class="row__sub">Print QR Codes - Stick it on the product - Scan it</h2>
-                            <h2 class="row__sub">Download Up-To-Date Excel Sheet</h2><br>
+                            <h1 class="site__title">Start Your Scanner</h1><br>
+                            <h2 class="row__sub">Print QR Codes - Stick it on the product - Scan it</h2><br>
                             <div class="site__box-link">
                                 <a class="btn btn--green" href="/scan">Scan</a>
-                                <button class="btn btn--revert btn-width" onclick="download()">Download</button>
                             </div>
                         </div>
                     </div>
@@ -356,60 +422,6 @@
             </div>
         </div>
     
-        <!--
-        <div class="sect sect--white sect--no-padding">
-            <div class="container">
-                <div class="row row--center">
-                    <div class="col-md-3 col-xs-6 col-sm-6 partner">
-                        <a href="#" class="partner__link">
-                            <img class="partner_img" src="https://image.ibb.co/mOtHRw/fblogo.png">
-                        </a>
-                    </div>
-                
-                    <div class="col-md-3  col-xs-6 col-sm-6 partner">
-                        <a href="#" class="partner__link">
-                            <img class="partner_img" src="https://image.ibb.co/nfpXRw/twitterlogo.png">
-                        </a>
-                    </div>
-        
-        
-                    <div class="col-md-3 col-xs-6 col-sm-6 partner">
-                        <a href="#" class="partner__link">
-                            <img class="partner_img" src="https://image.ibb.co/imgOYb/googlelogo.png">
-                        </a>
-                    </div>
-        
-                    <div class="col-md-3 col-xs-6 col-sm-6 partner">
-                        <a href="#" class="partner__link">
-                            <img class="partner_img" src="https://image.ibb.co/ebGAeG/dribbblelogo.png">
-                        </a>
-                    </div>
-                </div>
-                <div class="row row--center">
-                    <div class="col-md-3 col-xs-6 col-sm-6 partner">
-                        <a href="#" class="partner__link">
-                            <img class="partner_img" src="https://image.ibb.co/npV8Yb/gitlogo.png">
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6 col-sm-6 partner">
-                        <a href="#" class="partner__link">
-                            <img class="partner_img" src="https://image.ibb.co/cGyZ6w/stacklogo.png">
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6 col-sm-6 partner">
-                        <a href="#" class="partner__link">
-                            <img class="partner_img" src="https://image.ibb.co/ij03zG/inlogo.png">
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6 col-sm-6 partner">
-                        <a href="#" class="partner__link">
-                            <img class="partner_img" src="https://image.ibb.co/ekqdzG/codepenlogo.png">
-                        </a>
-                    </div>
-                </div>
-            </div>    
-        </div>
-        --->
         <div class="sect sect--white">
             <div class="container">
                 <div class="row">
@@ -487,8 +499,13 @@
             </div>
         </footer>
         <script>
-            function download(){
-                fetch('/download').then(response => console.log(response.text()));
+            function download() {
+                const a = document.createElement('a');
+                a.href = '/download';
+                a.download = 'management.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             }
             $("#myCarousel").carousel({
                 interval: false

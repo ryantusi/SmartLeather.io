@@ -12,6 +12,7 @@ def revenue_chart():
     rows = db.execute("SELECT Total_Revenue FROM revenue WHERE YEAR = 2023")
     revenue = [row["Total_Revenue"] for row in rows]
     
+    plt.figure(figsize=(7, 4))
     plt.plot(months, revenue, color="#FF5733", label="Revenue (per month) for 2023", linestyle='-', marker='o', markersize=8)
     plt.xlabel("Month")
     plt.ylabel("Revenue")
@@ -35,6 +36,8 @@ def top_customers():
         names.append(row[0]["Customer_Name"])
     colors = ["#B85042", "#A7BEAE", "#E7E8D1"]
     explode = (0.1, 0, 0)
+
+    plt.figure(figsize=(10, 4))
     plt.pie(counts, labels=names, startangle=90, colors=colors, explode=explode, shadow=True)
     plt.title('Our Top Three Most Frequent Customers')
     plt.tight_layout()
@@ -50,6 +53,8 @@ def top_products():
         names.append(row[0]["Product_Name"])
     colors = ["#DDC3A5", "#201E20", "#E0A96D"]
     explode = (0.1, 0, 0)
+
+    plt.figure(figsize=(10, 4))
     plt.pie(counts, labels=names, startangle=90, colors=colors, explode=explode, shadow=True)
     plt.title('Our Top Three Hot Selling Products')
     plt.tight_layout()

@@ -618,6 +618,22 @@ filter: drop-shadow(0px 7px 4px rgba(0,0,0,.2));
   background-image: url(/static/assets/process.jpg);  
 }
 
+.article-pre__img--1{
+  background-image: url(/static/graphs/revenue.png);  
+}
+
+.article-pre__img--2{
+  background-image: url(/static/graphs/gauge_chart.png);  
+}
+
+.article-pre__img--3{
+  background-image: url(/static/graphs/customers.png);  
+}
+
+.article-pre__img--4{
+  background-image: url(/static/graphs/products.png);  
+}
+
 .article-pre:hover .article-pre__img {
   box-shadow: 0px 10px 13px 4px rgba(0, 0, 0,0.2);
 }

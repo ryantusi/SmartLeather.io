@@ -2,10 +2,12 @@ from cs50 import SQL
 from flask import Flask, redirect, render_template, request, session, send_file
 from flask_session import Session
 
+from download_excel import export_all_tables_to_excel
 from qr_scan import QRScanner
 from qr_generator import generate_qr_code
 from id_generation import product_id_generation, order_id_generation, customer_id_generation, job_card_generation
 from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, get_products, add_product, check_product, delete_product, add_order, check_order, delete_order
+from data_visualization import revenue_chart, top_customers, top_products, job_charts
 
 app = Flask(__name__)
 db = SQL("sqlite:///management.db")
@@ -32,6 +34,9 @@ def demo():
     if request.method == "GET":
         CUSTOMERS = get_customers()
         PRODUCTS = get_products()
+        revenue_chart()
+        top_customers()
+        top_products()
         return render_template("demo.html", customers = CUSTOMERS, products = PRODUCTS)
     else:
         # New Product
@@ -193,8 +198,14 @@ def stop_scanner():
     return 'Scanner stopped'
 
 @app.route("/download")
-def download():
-    pass
+def download_excel():
+    export_all_tables_to_excel()
+    return send_file("management.xlsx", as_attachment=True)
+
+@app.route("/live")
+def live():
+    CHARTS = job_charts()
+    return render_template("live.html", charts=CHARTS)
 
 if __name__ == '__main__':
     app.run(debug=True)
