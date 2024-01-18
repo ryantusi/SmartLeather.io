@@ -4,7 +4,7 @@ from flask_session import Session
 
 from qr_scan import QRScanner
 from qr_generator import generate_qr_code
-from id_generation import product_id_generation, order_id_generation, customer_id_generation
+from id_generation import product_id_generation, order_id_generation, customer_id_generation, job_card_generation
 from methods import copy_to_clipboard, customer_exists, add_customer, get_customers, check_customer, delete_customer, get_products, add_product, check_product, delete_product, add_order, check_order, delete_order
 
 app = Flask(__name__)
@@ -81,7 +81,8 @@ def demo():
                 return render_template("error.html", code=300, message="Incorrect Information Submitted")
             else:
                 new_order_id = order_id_generation("PVTLTD786")
-                add_order(new_order_id, customer_id, product_id3, quantity)
+                job_card = job_card_generation("PVTLTD786")
+                add_order(new_order_id, customer_id, product_id3, quantity, job_card)
                 qr_details = {
                     "Order_ID": new_order_id,
                     "Customer_ID": customer_id,

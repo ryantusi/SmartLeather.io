@@ -81,12 +81,12 @@ def delete_product(product_id):
     db.execute("DELETE FROM products WHERE Product_ID = ?", product_id)
 
 
-def add_order(order_id, customer_id, product_id, quantity):
+def add_order(order_id, customer_id, product_id, quantity, job_card):
     row = db.execute("SELECT Product_Price FROM products WHERE Product_ID = ?", product_id)
     price = row[0]["Product_Price"]
     total = int(quantity) * float(price)
     db.execute("INSERT INTO orders (Order_ID, Customer_ID, Product_ID, Quantity, Price, Status) VALUES (?, ?, ?, ?, ?, 'NA')", order_id, customer_id, product_id, quantity, total)
-    db.execute("INSERT INTO jobs (Order_ID, Customer_ID, Product_ID, Total, Status) VALUES (?, ?, ?, ?, 'NA')", order_id, customer_id, product_id, quantity)
+    db.execute("INSERT INTO jobs (Order_ID, Customer_ID, Product_ID, Total, Status, Job_Card) VALUES (?, ?, ?, ?, 'NA', ?)", order_id, customer_id, product_id, quantity, job_card)
 
 def check_order(id1, id2, date):
     row = db.execute("SELECT * FROM orders WHERE Order_ID = ? AND Customer_ID = ? AND Date = ?", id1, id2, date)
