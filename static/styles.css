@@ -610,6 +610,14 @@ filter: drop-shadow(0px 7px 4px rgba(0,0,0,.2));
   background-image: url(/static/assets/prem.jpg);  
 }
 
+.article-pre__img--nineth{
+  background-image: url(/static/assets/cv.jpg);  
+}
+
+.article-pre__img--tenth{
+  background-image: url(/static/assets/process.jpg);  
+}
+
 .article-pre:hover .article-pre__img {
   box-shadow: 0px 10px 13px 4px rgba(0, 0, 0,0.2);
 }

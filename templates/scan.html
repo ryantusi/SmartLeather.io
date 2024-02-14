@@ -1,0 +1,36 @@
+{% extends "demo.html" %}
+{% block title %}
+    Scanner
+{% endblock %}
+
+{% block main %}
+<div class="sect sect--padding-bottom">
+    <div class="container">
+        <div class="row row--center">
+            <div class="price-box__img"></div>
+            <h1 class="price-box__title">
+                Start <span class="red">Scanner</span>
+            </h1>
+            <p class="price-box__people">
+                Click button to start or stop and <span class="blue"> scan </span> printed QR codes
+            </p>
+            <div class="site__box-link">
+                <button class="btn btn--purple" onclick="startScanner()">Start</button>
+                <button class="btn btn--red btn-width" onclick="stopScanner()">Stop</button>
+            </div>
+            
+    </div>
+</div>
+
+<script>
+    function startScanner() {
+        // Redirect to the /start_scanner route to start the scanner
+        fetch('/start_scanner').then(response => console.log(response.text()));
+    }
+
+    function stopScanner() {
+        // Redirect to the /stop_scanner route to stop the scanner
+        fetch('/stop_scanner').then(response => console.log(response.text()));
+    }
+</script>
+{% endblock %}
