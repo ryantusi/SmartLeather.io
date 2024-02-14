@@ -1,0 +1,10 @@
+{% extends "demo.html" %}
+{% block title %}
+    Live Dashboard
+{% endblock %}
+
+{% block main %}
+    {% for item in charts %}
+        <div class="chart-container">{{ item | safe }}</div>
+    {% endfor %}
+{% endblock %}
